@@ -2,6 +2,7 @@ package com.proyecto_policlinico.spring.policlinico_peruano_italiano.entities;
 
 import java.util.Set;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -23,8 +24,10 @@ public class SpecialtyEntity {
     
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id_specialty")
     private int idSpecialty;
-
+    
+    @Column(name = "name_specialty")
     private String nameSpecialty;
 
     @ManyToMany(mappedBy = "specialties")

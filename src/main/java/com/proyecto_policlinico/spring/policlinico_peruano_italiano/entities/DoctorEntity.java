@@ -1,8 +1,9 @@
 package com.proyecto_policlinico.spring.policlinico_peruano_italiano.entities;
 
-import java.util.Date;
+import java.time.LocalDate;
 import java.util.Set;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -25,12 +26,19 @@ import lombok.ToString;
 public class DoctorEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id_doctor")
     private int idDoctor;
 
+    @Column(name = "name_doc")
     private String nameDoc;
+
+    @Column(name = "lastname_doc")
     private String lastnameDoc;
-    private Date date_birth;
+
+    private LocalDate date_birth;
+
     private String dni;
+    
     private String phone;
 
     @ManyToMany
