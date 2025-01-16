@@ -1,10 +1,22 @@
+# Archivos generados
 HELP.md
 target/
+build/
+.nb-gradle/
+/dist/
+/nbdist/
+
+# Maven/Gradle
 !.mvn/wrapper/maven-wrapper.jar
 !**/src/main/**/target/
 !**/src/test/**/target/
 
-### STS ###
+# Archivos de configuración sensibles
+application.properties
+application.yml
+*.env
+
+# STS
 .apt_generated
 .classpath
 .factorypath
@@ -13,21 +25,23 @@ target/
 .springBeans
 .sts4-cache
 
-### IntelliJ IDEA ###
-.idea
+# IntelliJ IDEA
+.idea/
 *.iws
 *.iml
 *.ipr
 
-### NetBeans ###
+# NetBeans
 /nbproject/private/
 /nbbuild/
-/dist/
-/nbdist/
-/.nb-gradle/
-build/
-!**/src/main/**/build/
-!**/src/test/**/build/
 
-### VS Code ###
+# VS Code
 .vscode/
+
+# Node.js (si aplica)
+node_modules/
+dist/
+
+# Docker (si aplica)
+*.docker
+docker-compose.override.yml
