@@ -2,6 +2,7 @@ package com.proyecto_policlinico.spring.policlinico_peruano_italiano.entities;
 
 import java.util.Set;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -33,6 +34,7 @@ public class SpecialtyEntity {
     private String nameSpecialty;
 
     @ManyToMany(mappedBy = "specialties")
+    @JsonIgnore
     @ToString.Exclude
     private Set<DoctorEntity> doctors;
 

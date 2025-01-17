@@ -4,7 +4,7 @@ import java.time.LocalDate;
 import java.util.Set;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -26,7 +26,6 @@ import lombok.ToString;
 @NoArgsConstructor
 @AllArgsConstructor
 @ToString
-
 public class DoctorEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -53,6 +52,7 @@ public class DoctorEntity {
     inverseJoinColumns = @JoinColumn(name = "id_specialty")
     )
     @ToString.Exclude
+    @JsonIgnore
     private Set<SpecialtyEntity> specialties;
     
 }
