@@ -3,6 +3,9 @@ package com.proyecto_policlinico.spring.policlinico_peruano_italiano.entities;
 import java.time.LocalDate;
 import java.util.Set;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -23,6 +26,7 @@ import lombok.ToString;
 @NoArgsConstructor
 @AllArgsConstructor
 @ToString
+
 public class DoctorEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -35,10 +39,12 @@ public class DoctorEntity {
     @Column(name = "lastname_doc")
     private String lastnameDoc;
 
+    @Column(name = "date_birth")
+    @JsonFormat(pattern = "yyyy-MM-dd")
     private LocalDate date_birth;
 
     private String dni;
-    
+
     private String phone;
 
     @ManyToMany
