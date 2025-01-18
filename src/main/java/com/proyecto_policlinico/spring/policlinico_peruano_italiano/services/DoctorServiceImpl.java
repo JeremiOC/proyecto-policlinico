@@ -12,7 +12,6 @@ import org.springframework.transaction.annotation.Transactional;
 import com.proyecto_policlinico.spring.policlinico_peruano_italiano.entities.DoctorEntity;
 import com.proyecto_policlinico.spring.policlinico_peruano_italiano.entities.SpecialtyEntity;
 import com.proyecto_policlinico.spring.policlinico_peruano_italiano.entities.dto.DoctorDTO;
-import com.proyecto_policlinico.spring.policlinico_peruano_italiano.entities.dto.DoctorMapper;
 import com.proyecto_policlinico.spring.policlinico_peruano_italiano.repositories.DoctorRepository;
 import com.proyecto_policlinico.spring.policlinico_peruano_italiano.repositories.SpecialtyRepository;
 
@@ -42,6 +41,7 @@ public class DoctorServiceImpl implements DoctorService {
         doc.setDate_birth(docDto.getDate_birth());
         doc.setDni(docDto.getDni());
         doc.setPhone(docDto.getPhone());
+        Set<SpecialtyEntity> specs = specialtyRepository.findByIdSpecialtyIn(docDto.getSpecialties());
         /* 
         Set<SpecialtyEntity> specs = docDto.getSpecialties()
         .stream()
@@ -63,14 +63,16 @@ public class DoctorServiceImpl implements DoctorService {
             docFound.setLastnameDoc(docDto.getLastnameDoc());
             docFound.setDate_birth(docDto.getDate_birth());
             docFound.setPhone(docDto.getPhone());
-
+            Set<SpecialtyEntity> specs = specialtyRepository.findByIdSpecialtyIn(docDto.getSpecialties());
+            /* 
             Set<SpecialtyEntity> updateSpecs = docDto.getSpecialties().stream()
                                     .map(spec-> specialtyRepository.findById(spec.getIdSpecialty())
                                     .orElseThrow(()-> new RuntimeException("Especialidad con id : "+spec.getIdSpecialty()+" no existe")))
                                     .collect(Collectors.toSet());
             
+            */
 
-            docFound.setSpecialties(updateSpecs);
+            docFound.setSpecialties(specs);
             doctorRepository.save(docFound);
             return Optional.of(docFound);
         }
@@ -78,12 +80,12 @@ public class DoctorServiceImpl implements DoctorService {
     }
 
     @Override
-    public Optional<DoctorDTO> delete(int id) {
+    public Optional<DoctorEntity> delete(int id) {
         Optional<DoctorEntity> opt = doctorRepository.findById(id);
         if(opt.isPresent()){
             DoctorEntity doc = opt.get();
             doctorRepository.delete(doc);
-           return Optional.of(DoctorMapper.toDto(doc));
+           return Optional.of(doc);
         }
         return Optional.empty();
     }

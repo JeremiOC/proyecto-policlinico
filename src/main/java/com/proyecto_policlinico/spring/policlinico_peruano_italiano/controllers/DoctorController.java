@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.proyecto_policlinico.spring.policlinico_peruano_italiano.entities.DoctorEntity;
 import com.proyecto_policlinico.spring.policlinico_peruano_italiano.entities.dto.DoctorDTO;
 import com.proyecto_policlinico.spring.policlinico_peruano_italiano.services.DoctorService;
 
@@ -62,7 +63,7 @@ public class DoctorController {
     @DeleteMapping("/delete/{id}")
     public ResponseEntity<?> deleteDoctor(@PathVariable int id){
        try {
-        Optional<DoctorDTO> deletedDoctor = doctorService.delete(id);
+        Optional<DoctorEntity> deletedDoctor = doctorService.delete(id);
             if(deletedDoctor.isPresent()){
             return ResponseEntity.status(HttpStatus.OK).body(deletedDoctor.get());
             }else{

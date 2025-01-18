@@ -12,5 +12,5 @@ public interface DoctorService {
     Optional<DoctorEntity> findById(int id);
     DoctorEntity createDoctor(DoctorDTO docDto);
     Optional<DoctorEntity> updateDoctor(int id, DoctorDTO docDto);
-    Optional<DoctorDTO> delete(int id);
+    Optional<DoctorEntity> delete(int id);
 }
