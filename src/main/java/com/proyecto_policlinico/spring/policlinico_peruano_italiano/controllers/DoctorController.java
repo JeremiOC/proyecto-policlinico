@@ -18,8 +18,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.proyecto_policlinico.spring.policlinico_peruano_italiano.entities.DoctorEntity;
 import com.proyecto_policlinico.spring.policlinico_peruano_italiano.entities.dto.DoctorDTO;
+import com.proyecto_policlinico.spring.policlinico_peruano_italiano.entities.dto.DoctorResponseDTO;
 import com.proyecto_policlinico.spring.policlinico_peruano_italiano.services.DoctorService;
 
 import jakarta.validation.Valid;
@@ -36,7 +36,8 @@ public class DoctorController {
             return validation(result);
         }
         try{
-        return ResponseEntity.status(HttpStatus.CREATED).body(doctorService.createDoctor(doctor));
+        DoctorResponseDTO createdDoc = doctorService.createDoctor(doctor);
+        return ResponseEntity.status(HttpStatus.CREATED).body(createdDoc);
         }catch(RuntimeException ex){
             return ResponseEntity.badRequest().body("Error al crear al doctor : "+ex.getMessage());
         }
@@ -54,7 +55,8 @@ public class DoctorController {
             return validation(result);
         }
         try {
-            return ResponseEntity.status(HttpStatus.ACCEPTED).body(doctorService.updateDoctor(id, doc));
+            Optional<DoctorResponseDTO> docUpdate = doctorService.updateDoctor(id, doc);
+            return ResponseEntity.status(HttpStatus.ACCEPTED).body(docUpdate);
         } catch (RuntimeException ex) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Error al actualizar el doctor : "+ex.getMessage());
         }
@@ -63,7 +65,7 @@ public class DoctorController {
     @DeleteMapping("/delete/{id}")
     public ResponseEntity<?> deleteDoctor(@PathVariable int id){
        try {
-        Optional<DoctorEntity> deletedDoctor = doctorService.delete(id);
+        Optional<DoctorResponseDTO> deletedDoctor = doctorService.delete(id);
             if(deletedDoctor.isPresent()){
             return ResponseEntity.status(HttpStatus.OK).body(deletedDoctor.get());
             }else{

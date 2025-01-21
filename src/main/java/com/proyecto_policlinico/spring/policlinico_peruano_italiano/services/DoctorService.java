@@ -5,12 +5,13 @@ import java.util.Optional;
 
 import com.proyecto_policlinico.spring.policlinico_peruano_italiano.entities.DoctorEntity;
 import com.proyecto_policlinico.spring.policlinico_peruano_italiano.entities.dto.DoctorDTO;
+import com.proyecto_policlinico.spring.policlinico_peruano_italiano.entities.dto.DoctorResponseDTO;
 
 public interface DoctorService {
 
     List<DoctorEntity> listDoctors();
-    Optional<DoctorEntity> findById(int id);
-    DoctorEntity createDoctor(DoctorDTO docDto);
-    Optional<DoctorEntity> updateDoctor(int id, DoctorDTO docDto);
-    Optional<DoctorEntity> delete(int id);
+    Optional<DoctorResponseDTO> findById(int id);
+    DoctorResponseDTO createDoctor(DoctorDTO docDto);
+    Optional<DoctorResponseDTO> updateDoctor(int id, DoctorDTO docDto);
+    Optional<DoctorResponseDTO> delete(int id);
 }
