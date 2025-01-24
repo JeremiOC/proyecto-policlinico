@@ -80,7 +80,7 @@ public class DoctorController {
     @GetMapping("/findAll")
     public ResponseEntity<?> findAllDocs(){
         try {
-            return ResponseEntity.ok().body(doctorService.listDoctors());
+            return ResponseEntity.ok().body(doctorService.listDoctors());       
         } catch (RuntimeException ex) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Error al listar los doctores: "+ex.getMessage());
         }

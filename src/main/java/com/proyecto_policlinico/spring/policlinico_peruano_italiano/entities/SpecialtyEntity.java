@@ -10,6 +10,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToMany;
+import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -30,7 +31,8 @@ public class SpecialtyEntity {
     @Column(name = "id_specialty")
     private int idSpecialty;
 
-    @Column(name = "name_specialty")
+    @Column(name = "name_specialty", nullable = false, unique = true)
+    @NotBlank(message = "El nombre de la especialidad es obligatorio.")
     private String nameSpecialty;
 
     @ManyToMany(mappedBy = "specialties")

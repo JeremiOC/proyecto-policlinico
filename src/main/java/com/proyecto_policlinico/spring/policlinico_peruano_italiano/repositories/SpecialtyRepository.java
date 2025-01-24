@@ -9,4 +9,6 @@ import com.proyecto_policlinico.spring.policlinico_peruano_italiano.entities.Spe
 public interface SpecialtyRepository extends JpaRepository<SpecialtyEntity,Integer> {
     Set<SpecialtyEntity> findByIdSpecialtyIn(Set<Integer> ids);
 
+    boolean existsByNameSpecialty(String nameSpecialty);
+
 }
