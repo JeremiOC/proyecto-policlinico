@@ -5,6 +5,8 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -25,14 +27,17 @@ public class DoctorServiceImpl implements DoctorService {
     private DoctorRepository doctorRepository;
     @Autowired 
     private SpecialtyRepository specialtyRepository;
-    
+
+    private Logger log = LoggerFactory.getLogger(DoctorServiceImpl.class);
     @Transactional(readOnly = true)
     @Override
-    public List<DoctorEntity> listDoctors() {
-        return doctorRepository.findAll();
+    public List<DoctorResponseDTO> listDoctors() {
+        List<DoctorEntity> doctors = doctorRepository.findAllWithSpecialties();
+        return doctors.stream().map(doctor -> convertToResponseDTO(doctor)).collect(Collectors.toList());
     }
 
     @Override
+    @Transactional(readOnly = true)
     public Optional<DoctorResponseDTO> findById(int id) {
         Optional<DoctorEntity> doc = doctorRepository.findByIdWithSpecialties(id);
         if(doc.isPresent()){
@@ -43,20 +48,29 @@ public class DoctorServiceImpl implements DoctorService {
     }
 
     @Override
-    public DoctorResponseDTO  createDoctor(DoctorDTO docDto) {
-        DoctorEntity doc = new DoctorEntity();
-        doc.setNameDoc(docDto.getNameDoc());
-        doc.setLastnameDoc(docDto.getLastnameDoc());
-        doc.setDate_birth(docDto.getDate_birth());
-        doc.setDni(docDto.getDni());
-        doc.setPhone(docDto.getPhone());
-        Set<SpecialtyEntity> specs = updateSpecialties(docDto.getSpecialties());
-        doc.setSpecialties(specs);
-        return convertToResponseDTO(doctorRepository.save(doc));
-        
+    @Transactional
+    public DoctorResponseDTO createDoctor(DoctorDTO docDto) {
+        try{
+            DoctorEntity doc = new DoctorEntity();
+            doc.setNameDoc(docDto.getNameDoc());
+            doc.setLastnameDoc(docDto.getLastnameDoc());
+            doc.setDate_birth(docDto.getDate_birth());
+            doc.setDni(docDto.getDni());
+            doc.setPhone(docDto.getPhone());
+            Set<SpecialtyEntity> specs = updateSpecialties(docDto.getSpecialties());
+            doc.setSpecialties(specs);
+            
+            DoctorEntity docSave = doctorRepository.save(doc);
+            log.info("Doctor creado exitosamente con ID: {} ",docSave.getIdDoctor());
+            return convertToResponseDTO(docSave);
+        }catch(Exception e){
+            log.error("Error al crear el doctor : {}", e.getMessage());
+            throw e;
+        }
     }
 
     @Override
+    @Transactional
     public Optional<DoctorResponseDTO> updateDoctor(int id, DoctorDTO docDto) {
         Optional<DoctorEntity> opt = doctorRepository.findById(id);
         if(opt.isPresent()){
@@ -76,6 +90,7 @@ public class DoctorServiceImpl implements DoctorService {
     }
 
     @Override
+    @Transactional
     public Optional<DoctorResponseDTO> delete(int id) {
         Optional<DoctorEntity> opt = doctorRepository.findByIdWithSpecialties(id);
         if(opt.isPresent()){
